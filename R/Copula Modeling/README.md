@@ -1,0 +1,4 @@
+## This project relates to the fact separating marginals from dependency structures from two stocks namely: NVIDIA and AMD. Secondly, we plot a simulated transformed data to see if our model resembles the actual plot of the data
+## Sometimes correlated stocks are held in a portfolio and investor and analyst want to figure out the correlations between the assets. Mostly, correlations only measure linear relationships, excluding non linear ones.
+## That is why it's important to consider also the non linear relationships, tail dependencies and estimated distributions to fit around the actual distributions. Copula models thus come into play.
+## Copula models sepearate their marginals from their dependency structure and provide us insightful estimates which is more sophisticated than standard regression.
