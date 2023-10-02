@@ -26,6 +26,8 @@ fit_skt_a=st.mple(matrix(1,n,1),y=amd_r,dp=c(mean(amd_r),sd(amd_r),0,10),control
 fit_skn_n=sn.mple(matrix(1,n,1),y=nvd_r,cp=c(xi=mean(nvd_r),omega=sd(nvd_r),alpha=1))
 fit_skn_a=sn.mple(matrix(1,n,1),y=amd_r,cp=c(xi=mean(amd_r),omega=sd(amd_r),alpha=1))
 
+
+## Transforming Marginals to Uniform Distributions 
 est1=fit_skt_a$dp
 est2=fit_skt_n$dp
 u1=numeric(length(amd_r))
@@ -40,11 +42,6 @@ for(i in seq_along(nvd_r)) {
   u2[i] <- pst(nvd_r[i], dp = est2)}
 u2=xts(u2,order.by = index(nvd_r))
 
-## Transforming Marginals to Uniform Distributions 
-##est1=fit_skt_a$dp
-##est2=fit_skt_n$dp
-##u1=pst(amd_r,dp=est1)
-##u2=pst(nvd_r,dp=est2)
 
 ##2)Skewed Normal
 
