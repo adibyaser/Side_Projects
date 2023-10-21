@@ -31,17 +31,17 @@ fit_skn_a=sn.mple(rep(1,length(amd_r)),amd_r)
 fit_skn_n
 ##Check AIC For Each of them 
 
--2*fit_normaln$loglik+2*(2)
--2*fit_normala$loglik+2*(2)
+-2*fit_normaln$loglik+2*(2) ##-152.5349
+-2*fit_normala$loglik+2*(2) ##-101.7679
 
--2*fit_tn$loglik+2*(3)
--2*fit_ta$loglik+2*(3)
+-2*fit_tn$loglik+2*(3) ##-153.7437
+-2*fit_ta$loglik+2*(3) ##-99.99605
 
--2*fit_skn_n$logL+2*(3)
--2*fit_skn_a$logL+2*(3)
+-2*fit_skn_n$logL+2*(3) ##-154.0759
+-2*fit_skn_a$logL+2*(3) ##-100.3968
 
--2*fit_skt_n$logL+2*(4)
--2*fit_skt_a$logL+2*(4)
+-2*fit_skt_n$logL+2*(4) ##-153.0767
+-2*fit_skt_a$logL+2*(4) ##-98.39819
 ## Skewed Normal
 est1=fit_normala$estimate
 est2=fit_skt_n$cp
@@ -51,11 +51,27 @@ u2=psn(nvd_r,dp=est2)
 ##U hat Combinations
 uhat=cbind(u1,u2)
 
-## Skewed N
+## Copula Modeling
 
-Ct=fitCopula(copula=tCopula(dim=2),data=uhat,method="ml")## T Copula
+Ct=fitCopula(copula=tCopula(dim=2),data=uhat,method="ml")## T Copula, If you run this, you will most likely run into a Hessian not converging. Too many parameters to fit
+Ct@estimate ##
+
+### 2 Step MLE
+dff=seq(5.25,45,0.5) ## Degrees of Freedom Sequence
+n=length(dff)
+copula_l=rep(0,n)
+for(i in 1:n){Ct=fitCopula(copula=tCopula(dim=2,df=dff[i],df.fixed = TRUE),data=uhat,method="ml")
+copula_l[i]=Ct@loglik}
+par(mfrow=c(1,1))
+plot(dff,copula_l,main='Optimization of Likelihood Across Degrees of Freedom')
+
+
+dff[which.max(copula_l)] ## Output:44.75
+
+####
+Ct=fitCopula(copula=tCopula(dim=2,df=44.75,df.fixed = TRUE),data=uhat,method="ml")## T Copula, Now this will converge
 Ct@estimate
-Ct_logL=loglikCopula(param=Ct@estimate,u=uhat,copula=tCopula(dim=2));#compute loglikelihood function
+Ct_logL=loglikCopula(param=Ct@estimate,u=uhat,copula=tCopula(dim=2,df=44.75,df.fixed=TRUE))#compute loglikelihood function
 Ct_logL
 -2*Ct_logL+2*length(Ct@estimate)#AIC
 Cfr=fitCopula(copula=frankCopula(dim=2),data=uhat,method="ml")#fit frank copula
@@ -84,3 +100,12 @@ par(mfrow=c(2,1))
 plot(Simu_X1,Simu_X2,main='Simulated Plot of AMD & NVIDIA',xlab='Simu_AMD',ylab='Simu_NVIDIA')
 plot(coredata(amd_r),coredata(nvd_r),main='Actual Plot of AMD & NVIDIA')
 
+
+## Simulation For T Copula
+Simu_U=rCopula(n,tCopula(dim=2,Ct@estimate[1],df=44.75))
+plot(Simu_U[,1],Simu_U[,2])
+Simu_X1=qnorm(Simu_U[,1],est1)
+Simu_X2=qsn(Simu_U[,2],dp=est2)
+par(mfrow=c(2,1))
+plot(Simu_X1,Simu_X2,main='Simulated Plot of AMD & NVIDIA',xlab='Simu_AMD',ylab='Simu_NVIDIA')
+plot(coredata(amd_r),coredata(nvd_r),main='Actual Plot of AMD & NVIDIA')
