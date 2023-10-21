@@ -79,7 +79,7 @@ Cgmbl@estimate
 Cgmbl_logL=loglikCopula(param=Cgmbl@estimate,u=uhat,copula=gumbelCopula(dim=2))
 Cgmbl_logL
 -2*Cgmbl_logL+2*length(Cgmbl@estimate);#compute AIC
-##Simulation For Gumbel Copula
+##Simulation For Gumbel Copula because Gumbel Copula has the lease AIC out of the 4 copula models we have fitted
 Simu_U=rCopula(n,gumbelCopula(dim=2,Cgmbl@estimate))
 summary(Simu_U)
 plot(Simu_U[,1],Simu_U[,2])
