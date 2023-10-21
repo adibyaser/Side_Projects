@@ -26,23 +26,24 @@ fit_skt_n=st.mple(rep(1,length(nvd_r)),nvd_r)
 fit_skt_a=st.mple(rep(1,length(amd_r)),amd_r)
 
 
+
 fit_skn_n=sn.mple(rep(1,length(nvd_r)),nvd_r)
 fit_skn_a=sn.mple(rep(1,length(amd_r)),amd_r)
 
 fit_skn_n
 ##Check AIC For Each of them 
 
--2*fit_normaln$loglik+2*(2)
--2*fit_normala$loglik+2*(2)
+-2*fit_normaln$loglik+2*(2) ##Output:-152.5348
+-2*fit_normala$loglik+2*(2) ##Output:-101.7679
 
--2*fit_tn$loglik+2*(3)
--2*fit_ta$loglik+2*(3)
+-2*fit_tn$loglik+2*(3) ##-153.7437
+-2*fit_ta$loglik+2*(3) ## -99.99605
 
--2*fit_skn_n$logL+2*(3)
--2*fit_skn_a$logL+2*(3)
+-2*fit_skn_n$logL+2*(3) ##-154.0759
+-2*fit_skn_a$logL+2*(3) ##-100.3968
 
--2*fit_skt_n$logL+2*(4)
--2*fit_skt_a$logL+2*(4)
+-2*fit_skt_n$logL+2*(4) ##-153.0767
+-2*fit_skt_a$logL+2*(4) ##-98.39819
 
 ## So Skewed Normal is best one out there, given the lowest AIC
 ## Skewed Normal
@@ -55,7 +56,6 @@ u2=psn(nvd_r,dp=est2)
 uhat=cbind(u1,u2)
 
 plot(coredata(amd_r),coredata(nvd_r))
-uhat
 ## Skewed N
 
 Ct=fitCopula(copula=tCopula(dim=2),data=uhat,method="ml")## T Copula
