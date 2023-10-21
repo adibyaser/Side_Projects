@@ -44,7 +44,7 @@ fit_skn_n
 -2*fit_skt_n$logL+2*(4)
 -2*fit_skt_a$logL+2*(4)
 
-## So Skewned Normal is best one out there, given the lowest AIC
+## So Skewed Normal is best one out there, given the lowest AIC
 ## Skewed Normal
 est1=fit_skt_a$cp
 est2=fit_skt_n$cp
