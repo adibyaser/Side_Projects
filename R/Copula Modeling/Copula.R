@@ -12,6 +12,7 @@ amd_r=monthlyReturn(AMD$AMD.Adjusted,type='log')
 n=length(amd_r)
 nvd_r=coredata(nvd_r)
 amd_r=coredata(amd_r)
+### If you're wondering stationarity, note that it is already in a stationarity form because log form is already taking a difference between the prices
 ##Fit The following Distributions: Normal, Skewed normal,T,skewed T
 
 fit_normaln=fitdistr(nvd_r,densfun='normal')
